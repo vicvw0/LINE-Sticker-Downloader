@@ -77,7 +77,7 @@ class MyFrame(wx.Frame):
         dir = self.directory.GetValue()
 
         try:
-            pack_id = re.search(r'\d{7}', link).group()
+            pack_id = re.search(r'\d{3,}', link).group()
         except AttributeError:
             self.status_static.SetForegroundColour(ERROR_RED_RGB)
             self.status_static.SetLabel("⚠ Invalid LINE store link.")
@@ -94,8 +94,8 @@ class MyFrame(wx.Frame):
         folder_path = os.path.join(dir, pack_id)
 
         # Download sticker pack
-        url = 'http://dl.stickershop.line.naver.jp/products/0/0/1/{}/iphone/stickers@2x.zip'.format(pack_id)
-        url_anim = 'http://dl.stickershop.line.naver.jp/products/0/0/1/{}/iphone/stickerpack@2x.zip'.format(pack_id)
+        url = 'http://dl.stickershop.line.naver.jp/products/0/0/1/{}/pc/stickers.zip'.format(pack_id)
+        url_anim = 'http://dl.stickershop.line.naver.jp/products/0/0/1/{}/pc/stickerpack.zip'.format(pack_id)
 
         # Check if animated
         r = requests.get(url_anim, allow_redirects=True)
@@ -116,8 +116,8 @@ class MyFrame(wx.Frame):
 
             # Delete metadata and thumbnails
             os.remove(os.path.join(folder_path, 'productinfo.meta'))
-            os.remove(os.path.join(folder_path, 'tab_off@2x.png'))
-            os.remove(os.path.join(folder_path, 'tab_on@2x.png'))
+            os.remove(os.path.join(folder_path, 'tab_off.png'))
+            os.remove(os.path.join(folder_path, 'tab_on.png'))
             for f in glob(os.path.join(folder_path, '*_key*')):
                 os.remove(f)
         else:
@@ -136,7 +136,7 @@ class MyFrame(wx.Frame):
             for each_file in Path(folder_path).glob('*.*'):
                 os.remove(each_file)
 
-            subdir = Path(os.path.join(folder_path, 'animation@2x'))
+            subdir = Path(os.path.join(folder_path, 'animation'))
 
             for each_file in Path(subdir).glob('*.*'):  # grabs all files
                 trg_path = each_file.parent.parent  # gets the parent of the folder
